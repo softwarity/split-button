@@ -1,0 +1,191 @@
+// =============================================================================
+// Split Button (appSplitButton directive)
+// Material Design 3 compliant split button
+// =============================================================================
+
+.split-button {
+  display: inline-flex;
+  border-radius: var(--mdc-outlined-button-container-shape, 20px);
+  overflow: hidden;
+  vertical-align: middle;
+
+  // Main button styling
+  .split-button-main {
+    border: none;
+    background: transparent;
+    border-radius: 0 !important;
+    border-top-left-radius: var(--mdc-outlined-button-container-shape, 20px) !important;
+    border-bottom-left-radius: var(--mdc-outlined-button-container-shape, 20px) !important;
+    min-width: unset;
+    padding: 0 16px 0 24px;
+    height: 40px;
+    font-family: var(--mat-sys-label-large-font);
+    font-size: var(--mat-sys-label-large-size, 14px);
+    font-weight: var(--mat-sys-label-large-weight, 500);
+    letter-spacing: var(--mat-sys-label-large-tracking, 0.1px);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // Chevron button styling
+  .split-button-chevron {
+    border: none;
+    background: transparent;
+    border-radius: 0 !important;
+    border-top-right-radius: var(--mdc-outlined-button-container-shape, 20px) !important;
+    border-bottom-right-radius: var(--mdc-outlined-button-container-shape, 20px) !important;
+    min-width: 36px !important;
+    padding: 0 8px !important;
+    margin: 0 !important;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+    .split-button-icon {
+      width: 24px;
+      height: 24px;
+    }
+
+    &:hover {
+      background: color-mix(in srgb, currentColor 8%, transparent);
+    }
+  }
+
+  // Default/text variant (lowest emphasis) - no modifier class needed
+  &:not([class*="--"]) {
+    .split-button-main {
+      color: var(--mdc-text-button-label-text-color, var(--mat-sys-primary));
+
+      &:hover {
+        background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+      }
+    }
+
+    .split-button-chevron {
+      color: var(--mdc-text-button-label-text-color, var(--mat-sys-primary));
+    }
+  }
+
+  // Outlined variant (medium emphasis)
+  &--outlined {
+    border: 1px solid var(--mdc-outlined-button-outline-color, var(--mat-sys-outline));
+
+    .split-button-main {
+      color: var(--mdc-outlined-button-label-text-color, var(--mat-sys-primary));
+
+      &:hover {
+        background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+      }
+    }
+
+    .split-button-chevron {
+      border-left: 1px solid var(--mdc-outlined-button-outline-color, var(--mat-sys-outline));
+      color: var(--mdc-outlined-button-label-text-color, var(--mat-sys-primary));
+    }
+  }
+
+  // Elevated variant (medium emphasis with shadow)
+  &--elevated {
+    box-shadow: var(--mdc-protected-button-container-elevation-shadow, 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15));
+    background: var(--mdc-protected-button-container-color, var(--mat-sys-surface-container-low));
+
+    .split-button-main {
+      color: var(--mdc-protected-button-label-text-color, var(--mat-sys-primary));
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 20%;
+        height: 60%;
+        width: 1px;
+        background: currentColor;
+        opacity: 0.2;
+      }
+
+      &:hover {
+        background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+      }
+    }
+
+    .split-button-chevron {
+      color: var(--mdc-protected-button-label-text-color, var(--mat-sys-primary));
+    }
+  }
+
+  // Filled variant (high emphasis)
+  &--filled {
+    background: var(--mdc-filled-button-container-color, var(--mat-sys-primary));
+
+    .split-button-main {
+      color: var(--mdc-filled-button-label-text-color, var(--mat-sys-on-primary));
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 20%;
+        height: 60%;
+        width: 1px;
+        background: currentColor;
+        opacity: 0.2;
+      }
+
+      &:hover {
+        background: color-mix(in srgb, var(--mat-sys-on-primary) 8%, transparent);
+      }
+    }
+
+    .split-button-chevron {
+      color: var(--mdc-filled-button-label-text-color, var(--mat-sys-on-primary));
+    }
+  }
+
+  // Tonal variant (medium emphasis with container color)
+  &--tonal {
+    background: var(--mat-sys-secondary-container);
+
+    .split-button-main {
+      color: var(--mat-sys-on-secondary-container);
+      position: relative;
+
+      &::after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 20%;
+        height: 60%;
+        width: 1px;
+        background: currentColor;
+        opacity: 0.2;
+      }
+
+      &:hover {
+        background: color-mix(in srgb, var(--mat-sys-on-secondary-container) 8%, transparent);
+      }
+    }
+
+    .split-button-chevron {
+      color: var(--mat-sys-on-secondary-container);
+    }
+  }
+
+  // Disabled state
+  &--disabled {
+    pointer-events: none;
+    opacity: 0.38;
+  }
+}
+
+// Hidden trigger for menu (utility class)
+.hidden-trigger {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+}

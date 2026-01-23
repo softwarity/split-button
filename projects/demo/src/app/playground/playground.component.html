@@ -1,0 +1,65 @@
+<section class="playground">
+  <h2>Playground</h2>
+
+  <!-- Interactive index.html fragment with color scheme toggle -->
+  <div class="code-header">
+    <span>index.html</span>
+    <button class="color-scheme-toggle" (click)="toggleColorScheme()" [title]="isDarkMode() ? 'Switch to light mode' : 'Switch to dark mode'">
+      @if (isDarkMode()) {
+        <mat-icon>light_mode</mat-icon>
+      } @else {
+        <mat-icon>dark_mode</mat-icon>
+      }
+    </button>
+  </div>
+  <interactive-code class="inline-code" language="html">
+    <textarea><body class="${darkModeClass}">...</body></textarea>
+    <code-binding key="darkModeClass" type="readonly" [value]="darkModeClass()"></code-binding>
+  </interactive-code>
+
+  <!-- Interactive HTML Code for loading-indicator -->
+  <interactive-code language="html">
+    <textarea><loading-indicator [diameter]="${diameter}" [withContainer]="${withContainer}"/></textarea>
+    <code-binding key="diameter" type="select" options="24,32,48,64,96,128" [value]="diameter()" (change)="diameter.set($any($event).detail)"></code-binding>
+    <code-binding key="withContainer" type="boolean" [value]="withContainer()" (change)="withContainer.set($any($event).detail)"></code-binding>
+  </interactive-code>
+
+  <!-- Live preview -->
+  <div class="preview-container">
+    <div class="preview-box">
+      <loading-indicator [diameter]="diameter()" [withContainer]="withContainer()" />
+    </div>
+  </div>
+
+  <!-- SCSS Material Theme -->
+  <interactive-code language="scss">
+    <textarea>@use '@angular/material' as mat;
+
+html {
+  @include mat.theme((color: mat.$${palette}-palette));
+  color-scheme: light;
+  
+  & body.dark-mode { 
+    color-scheme: dark; 
+  }
+}</textarea>
+    <code-binding key="palette" type="select" options="violet,red,green,blue,yellow,cyan,magenta,orange,chartreuse,spring-green,azure,rose" [value]="selectedPalette()" (change)="selectedPalette.set($any($event).detail)"></code-binding>
+  </interactive-code>
+
+  <!-- SCSS Overrides -->
+  <interactive-code language="scss">
+    <textarea>@use '@softwarity/loading-indicator/loading-indicator-theme' as loading-indicator;
+:root {
+  @include loading-indicator.overrides((
+    ${bgEnabled}background-color: light-dark(${bgLight}, ${bgDark}),
+    ${shapeEnabled}shape-color: light-dark(${shapeLight}, ${shapeDark})
+  ));
+}</textarea>
+    <code-binding key="bgEnabled" type="comment" [value]="bgEnabled()" (change)="bgEnabled.set($any($event).detail)"></code-binding>
+    <code-binding key="bgLight" type="color" [value]="bgLight()" (change)="bgLight.set($any($event).detail)" [disabled]="!bgEnabled()"></code-binding>
+    <code-binding key="bgDark" type="color" [value]="bgDark()" (change)="bgDark.set($any($event).detail)" [disabled]="!bgEnabled()"></code-binding>
+    <code-binding key="shapeEnabled" type="comment" [value]="shapeEnabled()" (change)="shapeEnabled.set($any($event).detail)"></code-binding>
+    <code-binding key="shapeLight" type="color" [value]="shapeLight()" (change)="shapeLight.set($any($event).detail)" [disabled]="!shapeEnabled()"></code-binding>
+    <code-binding key="shapeDark" type="color" [value]="shapeDark()" (change)="shapeDark.set($any($event).detail)" [disabled]="!shapeEnabled()"></code-binding>
+  </interactive-code>
+</section>

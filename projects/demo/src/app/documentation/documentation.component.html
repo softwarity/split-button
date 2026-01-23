@@ -1,0 +1,183 @@
+<section class="documentation">
+  <h2>Documentation</h2>
+
+  <!-- Installation -->
+  <article class="doc-section">
+    <h3>Installation</h3>
+    <interactive-code language="shell">
+      <textarea>npm install @softwarity/loading-indicator</textarea>
+    </interactive-code>
+  </article>
+
+  <!-- Usage -->
+  <article class="doc-section">
+    <h3>Usage</h3>
+    <p>Import the component and use it in your template:</p>
+    <interactive-code language="typescript">
+      <textarea>// In your component
+import { LoadingIndicatorComponent } from '@softwarity/loading-indicator';
+
+@Component({
+  imports: [LoadingIndicatorComponent],
+  ...
+})</textarea>
+    </interactive-code>
+
+    <interactive-code language="html">
+      <textarea><!-- Basic usage -->
+<loading-indicator />
+
+<!-- With custom diameter -->
+<loading-indicator [diameter]="96" />
+
+<!-- With container background -->
+<loading-indicator withContainer />
+
+<!-- Combined -->
+<loading-indicator [diameter]="64" withContainer /></textarea>
+    </interactive-code>
+  </article>
+
+  <!-- API -->
+  <article class="doc-section">
+    <h3>API</h3>
+    <div class="api-table-wrapper">
+      <table class="api-table">
+        <thead>
+          <tr>
+            <th>Input</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>diameter</code></td>
+            <td><code>number</code></td>
+            <td><code>48</code></td>
+            <td>Size of the loading indicator in pixels</td>
+          </tr>
+          <tr>
+            <td><code>withContainer</code></td>
+            <td><code>boolean</code></td>
+            <td><code>false</code></td>
+            <td>When true, displays a circular background container behind the shape</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <!-- Features -->
+  <article class="doc-section">
+    <h3>Features</h3>
+    <ul class="feature-list">
+      <li><strong><a href="https://m3.material.io/components/loading-indicator/overview" target="_blank">Material 3 Expressive Design</a></strong> - Smooth morphing animation between 7 organic shapes</li>
+      <li><strong>60fps Animation</strong> - Uses requestAnimationFrame for butter-smooth performance</li>
+      <li><strong>Responsive to Theme</strong> - Automatically adapts to light/dark color schemes</li>
+      <li><strong>Standalone Component</strong> - No module import required, just import and use</li>
+      <li><strong>Lightweight</strong> - Pure SVG animation, no external dependencies</li>
+    </ul>
+  </article>
+
+  <!-- Theming -->
+  <article class="doc-section">
+    <h3>Theming (Material 3)</h3>
+    <p>The component provides a SCSS mixin to customize the colors. This approach follows Angular Material's theming pattern.</p>
+    <p>In your application's <code>styles.scss</code>, import the theme file and call the <code>overrides</code> mixin:</p>
+    <interactive-code language="scss">
+      <textarea>@use '@angular/material' as mat;
+@use '@softwarity/loading-indicator/loading-indicator-theme' as loading-indicator;
+
+// Your Material 3 theme
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$violet-palette,
+      tertiary: mat.$yellow-palette
+    )
+  ));
+
+  // Optional: customize loading indicator colors
+  // @include loading-indicator.overrides();
+}</textarea>
+    </interactive-code>
+
+    <h4>Customization</h4>
+    <p>The <code>overrides</code> mixin accepts a map of tokens to customize the appearance:</p>
+    <div class="api-table-wrapper">
+      <table class="api-table">
+        <thead>
+          <tr>
+            <th>Token</th>
+            <th>Default</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>background-color</code></td>
+            <td><code>var(--mat-sys-primary-container)</code></td>
+            <td>Background color when withContainer is true</td>
+          </tr>
+          <tr>
+            <td><code>shape-color</code></td>
+            <td><code>var(--mat-sys-on-secondary-container)</code></td>
+            <td>Color of the animated shape</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4>Examples</h4>
+    <interactive-code language="scss">
+      <textarea>// Customize colors with light/dark support
+@include loading-indicator.overrides((
+  background-color: light-dark(#e8def8, #4a4458),
+  shape-color: light-dark(#6750a4, #ccc2dc)
+));
+
+// Use Material 3 system colors
+@include loading-indicator.overrides((
+  background-color: var(--mat-sys-tertiary-container),
+  shape-color: var(--mat-sys-on-tertiary-container)
+));
+
+// Custom brand colors
+@include loading-indicator.overrides((
+  shape-color: #ff5722
+));</textarea>
+    </interactive-code>
+  </article>
+
+  <!-- Usage Examples -->
+  <article class="doc-section">
+    <h3>Usage Examples</h3>
+    <p>The loading indicator can be used in various contexts:</p>
+    <interactive-code language="html">
+      <textarea><!-- With @defer - placeholder while loading heavy component -->
+@defer (on idle) {
+  <app-heavy-component />
+} @placeholder (minimum 500ms) {
+  <div class="loading-placeholder">
+    <loading-indicator [diameter]="64" withContainer />
+  </div>
+}
+
+<!-- Centered in a container -->
+<div class="loading-overlay">
+  <loading-indicator [diameter]="64" withContainer />
+</div>
+
+<!-- Inline in a button -->
+<button [disabled]="isLoading">
+  @if (isLoading) {
+    <loading-indicator [diameter]="24" />
+  } @else {
+    Submit
+  }
+</button></textarea>
+    </interactive-code>
+  </article>
+</section>
