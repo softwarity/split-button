@@ -77,12 +77,9 @@
           "defaultConfiguration": "production"
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "polyfills": [],
-            "codeCoverage": true
+            "tsConfig": "tsconfig.spec.json"
           }
         }
       }

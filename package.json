@@ -28,15 +28,13 @@
     "start:demo": "ng serve demo",
     "cp:archway-ui": "cp -r dist/* ../../softwarity/archway/archway-ui/node_modules/@softwarity/split-button/",
     "watch": "ng build split-button --watch --configuration development",
-    "test": "cross-env CHROME_BIN='/usr/bin/google-chrome' ng test",
-    "test:ci": "ng test --no-watch --browsers=ChromeHeadless"
+    "test": "ng test",
+    "test:ci": "ng test --no-watch"
   },
-  "peerDependencies": {},
   "dependencies": {
     "tslib": "^2.6.2"
   },
   "devDependencies": {
-    "@softwarity/interactive-code": "^1.0.5",
     "@angular/animations": "^21.1.1",
     "@angular/build": "^21.0.2",
     "@angular/cdk": "^21.1.1",
@@ -50,17 +48,14 @@
     "@angular/platform-browser": "^21.1.1",
     "@angular/platform-browser-dynamic": "^21.1.1",
     "@angular/router": "^21.1.1",
+    "@softwarity/interactive-code": "^1.0.5",
     "@softwarity/split-button": "file:dist",
-    "@types/jasmine": "~4.6.0",
-    "jasmine-core": "~4.6.0",
-    "karma": "~6.4.2",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.1",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
+    "jsdom": "^27.4.0",
     "ng-packagr": "^21.0.0",
     "rxjs": "~7.8.1",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "vitest": "^4.0.18",
+    "zone.js": "^0.16.0"
   },
   "sideEffects": false
 }
