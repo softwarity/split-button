@@ -5,36 +5,67 @@
   <article class="doc-section">
     <h3>Installation</h3>
     <interactive-code language="shell">
-      <textarea>npm install @softwarity/loading-indicator</textarea>
+      <textarea>npm install @softwarity/split-button</textarea>
+    </interactive-code>
+  </article>
+
+  <!-- Setup -->
+  <article class="doc-section">
+    <h3>Setup</h3>
+    <p>First, include the styles in your global <code>styles.scss</code>:</p>
+    <interactive-code language="scss">
+      <textarea>@use '@softwarity/split-button/split-button-theme' as split-button;
+
+// Include split-button base styles (required)
+@include split-button.styles();</textarea>
     </interactive-code>
   </article>
 
   <!-- Usage -->
   <article class="doc-section">
     <h3>Usage</h3>
-    <p>Import the component and use it in your template:</p>
+    <p>Import the directive and use it in your template:</p>
     <interactive-code language="typescript">
       <textarea>// In your component
-import { LoadingIndicatorComponent } from '@softwarity/loading-indicator';
+import { SplitButtonDirective } from '@softwarity/split-button';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
-  imports: [LoadingIndicatorComponent],
+  imports: [SplitButtonDirective, MatMenuModule],
   ...
 })</textarea>
     </interactive-code>
 
     <interactive-code language="html">
-      <textarea><!-- Basic usage -->
-<loading-indicator />
+      <textarea><!-- Text button (default) -->
+<button appSplitButton [appSplitButtonTrigger]="trigger" (click)="onSave()">
+  Save
+</button>
+<span [matMenuTriggerFor]="menu" #trigger="matMenuTrigger"></span>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="onSaveAs()">Save As...</button>
+  <button mat-menu-item (click)="onSaveDraft()">Save Draft</button>
+</mat-menu>
 
-<!-- With custom diameter -->
-<loading-indicator [diameter]="96" />
+<!-- Filled variant -->
+<button appSplitButton="filled" [appSplitButtonTrigger]="trigger2" (click)="onSubmit()">
+  Submit
+</button>
 
-<!-- With container background -->
-<loading-indicator withContainer />
+<!-- Outlined variant -->
+<button appSplitButton="outlined" [appSplitButtonTrigger]="trigger3" (click)="onAction()">
+  Action
+</button>
 
-<!-- Combined -->
-<loading-indicator [diameter]="64" withContainer /></textarea>
+<!-- Tonal variant -->
+<button appSplitButton="tonal" [appSplitButtonTrigger]="trigger4" (click)="onProcess()">
+  Process
+</button>
+
+<!-- Elevated variant -->
+<button appSplitButton="elevated" [appSplitButtonTrigger]="trigger5" (click)="onExport()">
+  Export
+</button></textarea>
     </interactive-code>
   </article>
 
@@ -53,42 +84,61 @@ import { LoadingIndicatorComponent } from '@softwarity/loading-indicator';
         </thead>
         <tbody>
           <tr>
-            <td><code>diameter</code></td>
-            <td><code>number</code></td>
-            <td><code>48</code></td>
-            <td>Size of the loading indicator in pixels</td>
+            <td><code>appSplitButton</code></td>
+            <td><code>'' | 'filled' | 'tonal' | 'outlined' | 'elevated'</code></td>
+            <td><code>''</code></td>
+            <td>Button variant following Material Design 3 guidelines</td>
           </tr>
           <tr>
-            <td><code>withContainer</code></td>
+            <td><code>appSplitButtonTrigger</code></td>
+            <td><code>MatMenuTrigger</code></td>
+            <td><code>undefined</code></td>
+            <td>Reference to the MatMenuTrigger for the dropdown menu</td>
+          </tr>
+          <tr>
+            <td><code>disabled</code></td>
             <td><code>boolean</code></td>
             <td><code>false</code></td>
-            <td>When true, displays a circular background container behind the shape</td>
+            <td>Whether the button is disabled</td>
           </tr>
         </tbody>
       </table>
     </div>
   </article>
 
+  <!-- Variants -->
+  <article class="doc-section">
+    <h3>Button Variants (Material Design 3)</h3>
+    <ul class="feature-list">
+      <li><strong>Text (default)</strong> - Lowest emphasis, for less important actions</li>
+      <li><strong>Filled</strong> - High emphasis, for primary actions</li>
+      <li><strong>Tonal</strong> - Medium emphasis with a container color from the secondary palette</li>
+      <li><strong>Outlined</strong> - Medium emphasis with a border outline</li>
+      <li><strong>Elevated</strong> - Medium emphasis with a shadow elevation</li>
+    </ul>
+  </article>
+
   <!-- Features -->
   <article class="doc-section">
     <h3>Features</h3>
     <ul class="feature-list">
-      <li><strong><a href="https://m3.material.io/components/loading-indicator/overview" target="_blank">Material 3 Expressive Design</a></strong> - Smooth morphing animation between 7 organic shapes</li>
-      <li><strong>60fps Animation</strong> - Uses requestAnimationFrame for butter-smooth performance</li>
+      <li><strong><a href="https://m3.material.io/components/buttons/overview" target="_blank">Material Design 3 Compliant</a></strong> - Follows M3 button specifications</li>
+      <li><strong>5 Button Variants</strong> - Text, Filled, Tonal, Outlined, Elevated</li>
       <li><strong>Responsive to Theme</strong> - Automatically adapts to light/dark color schemes</li>
-      <li><strong>Standalone Component</strong> - No module import required, just import and use</li>
-      <li><strong>Lightweight</strong> - Pure SVG animation, no external dependencies</li>
+      <li><strong>Standalone Directive</strong> - No module import required, just import and use</li>
+      <li><strong>MatMenu Integration</strong> - Works seamlessly with Angular Material's menu component</li>
+      <li><strong>Accessible</strong> - Keyboard navigation and ARIA support</li>
     </ul>
   </article>
 
   <!-- Theming -->
   <article class="doc-section">
     <h3>Theming (Material 3)</h3>
-    <p>The component provides a SCSS mixin to customize the colors. This approach follows Angular Material's theming pattern.</p>
+    <p>The directive provides a SCSS mixin to customize the colors. This approach follows Angular Material's theming pattern.</p>
     <p>In your application's <code>styles.scss</code>, import the theme file and call the <code>overrides</code> mixin:</p>
     <interactive-code language="scss">
       <textarea>@use '@angular/material' as mat;
-@use '@softwarity/loading-indicator/loading-indicator-theme' as loading-indicator;
+@use '@softwarity/split-button/split-button-theme' as split-button;
 
 // Your Material 3 theme
 html {
@@ -99,8 +149,8 @@ html {
     )
   ));
 
-  // Optional: customize loading indicator colors
-  // @include loading-indicator.overrides();
+  // Optional: customize split-button colors
+  // @include split-button.overrides();
 }</textarea>
     </interactive-code>
 
@@ -117,14 +167,49 @@ html {
         </thead>
         <tbody>
           <tr>
-            <td><code>background-color</code></td>
-            <td><code>var(--mat-sys-primary-container)</code></td>
-            <td>Background color when withContainer is true</td>
+            <td><code>text-label-color</code></td>
+            <td><code>var(--mat-sys-primary)</code></td>
+            <td>Label color for text variant</td>
           </tr>
           <tr>
-            <td><code>shape-color</code></td>
+            <td><code>filled-container-color</code></td>
+            <td><code>var(--mat-sys-primary)</code></td>
+            <td>Container color for filled variant</td>
+          </tr>
+          <tr>
+            <td><code>filled-label-color</code></td>
+            <td><code>var(--mat-sys-on-primary)</code></td>
+            <td>Label color for filled variant</td>
+          </tr>
+          <tr>
+            <td><code>outlined-outline-color</code></td>
+            <td><code>var(--mat-sys-outline)</code></td>
+            <td>Border color for outlined variant</td>
+          </tr>
+          <tr>
+            <td><code>outlined-label-color</code></td>
+            <td><code>var(--mat-sys-primary)</code></td>
+            <td>Label color for outlined variant</td>
+          </tr>
+          <tr>
+            <td><code>tonal-container-color</code></td>
+            <td><code>var(--mat-sys-secondary-container)</code></td>
+            <td>Container color for tonal variant</td>
+          </tr>
+          <tr>
+            <td><code>tonal-label-color</code></td>
             <td><code>var(--mat-sys-on-secondary-container)</code></td>
-            <td>Color of the animated shape</td>
+            <td>Label color for tonal variant</td>
+          </tr>
+          <tr>
+            <td><code>elevated-container-color</code></td>
+            <td><code>var(--mat-sys-surface-container-low)</code></td>
+            <td>Container color for elevated variant</td>
+          </tr>
+          <tr>
+            <td><code>elevated-label-color</code></td>
+            <td><code>var(--mat-sys-primary)</code></td>
+            <td>Label color for elevated variant</td>
           </tr>
         </tbody>
       </table>
@@ -132,21 +217,22 @@ html {
 
     <h4>Examples</h4>
     <interactive-code language="scss">
-      <textarea>// Customize colors with light/dark support
-@include loading-indicator.overrides((
-  background-color: light-dark(#e8def8, #4a4458),
-  shape-color: light-dark(#6750a4, #ccc2dc)
+      <textarea>// Customize filled button colors
+@include split-button.overrides((
+  filled-container-color: light-dark(#6750a4, #d0bcff),
+  filled-label-color: light-dark(#ffffff, #381e72)
 ));
 
-// Use Material 3 system colors
-@include loading-indicator.overrides((
-  background-color: var(--mat-sys-tertiary-container),
-  shape-color: var(--mat-sys-on-tertiary-container)
+// Use Material 3 system colors for tonal variant
+@include split-button.overrides((
+  tonal-container-color: var(--mat-sys-tertiary-container),
+  tonal-label-color: var(--mat-sys-on-tertiary-container)
 ));
 
 // Custom brand colors
-@include loading-indicator.overrides((
-  shape-color: #ff5722
+@include split-button.overrides((
+  filled-container-color: #ff5722,
+  filled-label-color: #ffffff
 ));</textarea>
     </interactive-code>
   </article>
@@ -154,30 +240,39 @@ html {
   <!-- Usage Examples -->
   <article class="doc-section">
     <h3>Usage Examples</h3>
-    <p>The loading indicator can be used in various contexts:</p>
+    <p>The split button can be used in various contexts:</p>
     <interactive-code language="html">
-      <textarea><!-- With @defer - placeholder while loading heavy component -->
-@defer (on idle) {
-  <app-heavy-component />
-} @placeholder (minimum 500ms) {
-  <div class="loading-placeholder">
-    <loading-indicator [diameter]="64" withContainer />
-  </div>
-}
+      <textarea><!-- Save action with alternatives -->
+<button appSplitButton="filled" [appSplitButtonTrigger]="saveTrigger" (click)="onSave()">
+  Save
+</button>
+<span [matMenuTriggerFor]="saveMenu" #saveTrigger="matMenuTrigger"></span>
+<mat-menu #saveMenu="matMenu">
+  <button mat-menu-item (click)="onSaveAs()">Save As...</button>
+  <button mat-menu-item (click)="onSaveDraft()">Save Draft</button>
+  <button mat-menu-item (click)="onSaveAndClose()">Save & Close</button>
+</mat-menu>
 
-<!-- Centered in a container -->
-<div class="loading-overlay">
-  <loading-indicator [diameter]="64" withContainer />
-</div>
+<!-- Export with format options -->
+<button appSplitButton="outlined" [appSplitButtonTrigger]="exportTrigger" (click)="onExportPDF()">
+  Export PDF
+</button>
+<span [matMenuTriggerFor]="exportMenu" #exportTrigger="matMenuTrigger"></span>
+<mat-menu #exportMenu="matMenu">
+  <button mat-menu-item (click)="onExportCSV()">Export CSV</button>
+  <button mat-menu-item (click)="onExportXLSX()">Export Excel</button>
+  <button mat-menu-item (click)="onExportJSON()">Export JSON</button>
+</mat-menu>
 
-<!-- Inline in a button -->
-<button [disabled]="isLoading">
-  @if (isLoading) {
-    <loading-indicator [diameter]="24" />
-  } @else {
-    Submit
-  }
-</button></textarea>
+<!-- Send email with options -->
+<button appSplitButton="tonal" [appSplitButtonTrigger]="sendTrigger" (click)="onSend()">
+  Send
+</button>
+<span [matMenuTriggerFor]="sendMenu" #sendTrigger="matMenuTrigger"></span>
+<mat-menu #sendMenu="matMenu">
+  <button mat-menu-item (click)="onScheduleSend()">Schedule Send</button>
+  <button mat-menu-item (click)="onSendLater()">Send Later</button>
+</mat-menu></textarea>
     </interactive-code>
   </article>
 </section>

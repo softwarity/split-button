@@ -7,7 +7,7 @@
   "assets": [
     {
       "input": "src/lib",
-      "glob": "_loading-indicator-theme.scss",
+      "glob": "_split-button-theme.scss",
       "output": "."
     }
   ]

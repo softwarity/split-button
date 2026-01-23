@@ -1,4 +1,4 @@
-name: Build softwarity/loading-indicator
+name: Build softwarity/split-button
 run-name: ${{ github.actor }} run build on ${{ github.repository }}
 on:
   push:
@@ -19,7 +19,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: coverage-report
-          path: coverage/loading-indicator/
+          path: coverage/split-button/
           retention-days: 30
 
 

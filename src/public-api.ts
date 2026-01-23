@@ -1,6 +1,6 @@
 /*
- * Public API Surface of loading-indicator
+ * Public API Surface of split-button
  */
 
-export { LoadingIndicatorComponent } from './lib/loading-indicator.component';
+export { SplitButtonDirective } from './lib/split-button.directive';
 

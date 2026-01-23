@@ -1,6 +1,8 @@
-import { Component, CUSTOM_ELEMENTS_SCHEMA, computed, effect, signal } from '@angular/core';
+import { Component, CUSTOM_ELEMENTS_SCHEMA, computed, effect, inject, signal } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { LoadingIndicatorComponent } from '@softwarity/loading-indicator';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { SplitButtonDirective } from '@softwarity/split-button';
 import { registerInteractiveCode } from '@softwarity/interactive-code';
 
 registerInteractiveCode();
@@ -10,34 +12,40 @@ const PALETTES = [
   'orange', 'chartreuse', 'spring-green', 'azure', 'violet', 'rose'
 ] as const;
 
+type SplitButtonVariant = '' | 'filled' | 'tonal' | 'outlined' | 'elevated';
+
 @Component({
   imports: [
     MatIconModule,
-    LoadingIndicatorComponent,
+    MatMenuModule,
+    MatSnackBarModule,
+    SplitButtonDirective,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './playground.component.html',
   styleUrl: './playground.component.scss'
 })
 export class PlaygroundComponent {
+  private readonly snackBar = inject(MatSnackBar);
+
   // Dark mode
   protected isDarkMode = signal(document.body.classList.contains('dark-mode'));
   protected darkModeClass = computed(() => this.isDarkMode() ? 'dark-mode' : '');
 
-  // Component properties
-  protected diameter = signal(64);
-  protected withContainer = signal(false);
+  // Split button properties
+  protected variant = signal<SplitButtonVariant>('');
+  protected disabled = signal(false);
 
   // Palette
   protected selectedPalette = signal('violet');
 
   // Color overrides
-  protected bgEnabled = signal(false);
-  protected bgLight = signal('#e8def8');
-  protected bgDark = signal('#4a4458');
-  protected shapeEnabled = signal(false);
-  protected shapeLight = signal('#6750a4');
-  protected shapeDark = signal('#ccc2dc');
+  protected labelColorEnabled = signal(false);
+  protected labelColorLight = signal('#6750a4');
+  protected labelColorDark = signal('#ccc2dc');
+  protected containerColorEnabled = signal(false);
+  protected containerColorLight = signal('#6750a4');
+  protected containerColorDark = signal('#4a4458');
 
   private styleElement: HTMLStyleElement | null = null;
 
@@ -54,24 +62,29 @@ export class PlaygroundComponent {
 
     // Apply CSS variables when color overrides change
     effect(() => {
-      const bgEnabled = this.bgEnabled();
-      const bgLight = this.bgLight();
-      const bgDark = this.bgDark();
-      const shapeEnabled = this.shapeEnabled();
-      const shapeLight = this.shapeLight();
-      const shapeDark = this.shapeDark();
+      const labelEnabled = this.labelColorEnabled();
+      const labelLight = this.labelColorLight();
+      const labelDark = this.labelColorDark();
+      const containerEnabled = this.containerColorEnabled();
+      const containerLight = this.containerColorLight();
+      const containerDark = this.containerColorDark();
+      const variant = this.variant();
 
-      if (bgEnabled || shapeEnabled) {
+      if (labelEnabled || containerEnabled) {
         if (!this.styleElement) {
           this.styleElement = document.createElement('style');
           document.head.appendChild(this.styleElement);
         }
         const lines: string[] = [];
-        if (bgEnabled) {
-          lines.push(`--loading-indicator-background-color: light-dark(${bgLight}, ${bgDark});`);
+
+        // Apply based on variant
+        const variantPrefix = variant ? `${variant}-` : 'text-';
+
+        if (labelEnabled) {
+          lines.push(`--split-button-${variantPrefix}label-color: light-dark(${labelLight}, ${labelDark});`);
         }
-        if (shapeEnabled) {
-          lines.push(`--loading-indicator-shape-color: light-dark(${shapeLight}, ${shapeDark});`);
+        if (containerEnabled && variant) {
+          lines.push(`--split-button-${variantPrefix}container-color: light-dark(${containerLight}, ${containerDark});`);
         }
         this.styleElement.textContent = `:root { ${lines.join(' ')} }`;
       } else if (this.styleElement) {
@@ -84,5 +97,13 @@ export class PlaygroundComponent {
   toggleColorScheme(): void {
     this.isDarkMode.update(dark => !dark);
     document.body.classList.toggle('dark-mode', this.isDarkMode());
+  }
+
+  onPrimaryAction(): void {
+    this.snackBar.open('Primary action executed', '', { duration: 2000 });
+  }
+
+  onMenuAction(action: string): void {
+    this.snackBar.open(`Menu action: ${action}`, '', { duration: 2000 });
   }
 }

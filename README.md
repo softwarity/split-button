@@ -4,45 +4,44 @@
   </a>
 </p>
 
-# @softwarity/loading-indicator
+# @softwarity/split-button
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@softwarity/loading-indicator">
-    <img src="https://img.shields.io/npm/v/@softwarity/loading-indicator?color=blue&label=npm" alt="npm version">
+  <a href="https://www.npmjs.com/package/@softwarity/split-button">
+    <img src="https://img.shields.io/npm/v/@softwarity/split-button?color=blue&label=npm" alt="npm version">
   </a>
-  <a href="https://github.com/softwarity/loading-indicator/blob/main/LICENSE">
+  <a href="https://github.com/softwarity/split-button/blob/main/LICENSE">
     <img src="https://img.shields.io/badge/license-MIT-blue" alt="license">
   </a>
-  <a href="https://github.com/softwarity/loading-indicator/actions/workflows/main.yml">
-    <img src="https://github.com/softwarity/loading-indicator/actions/workflows/main.yml/badge.svg" alt="build status">
+  <a href="https://github.com/softwarity/split-button/actions/workflows/main.yml">
+    <img src="https://github.com/softwarity/split-button/actions/workflows/main.yml/badge.svg" alt="build status">
   </a>
 </p>
 
-An Angular component that displays an expressive [Material 3 loading indicator](https://m3.material.io/components/loading-indicator/overview) with smooth morphing animation between organic shapes.
+An Angular directive that creates a [Material Design 3 split button](https://m3.material.io/components/buttons/overview) with a dropdown menu for secondary actions.
 
-**[Live Demo](https://softwarity.github.io/loading-indicator/)** | **[Release Notes](RELEASE_NOTES.md)**
+**[Live Demo](https://softwarity.github.io/split-button/)** | **[Release Notes](RELEASE_NOTES.md)**
 
 <p align="center">
-  <a href="https://softwarity.github.io/loading-indicator/">
-    <img src="projects/demo/src/assets/preview.png" alt="Loading Indicator Preview" width="400">
+  <a href="https://softwarity.github.io/split-button/">
+    <img src="projects/demo/src/assets/preview.png" alt="Split Button Preview" width="400">
   </a>
 </p>
 
 ## Features
 
-- **Material 3 Expressive Design** - Smooth morphing animation between 7 organic shapes
-- **60fps Animation** - Uses requestAnimationFrame for butter-smooth performance
+- **Material Design 3 Compliant** - Follows M3 button specifications
+- **5 Button Variants** - Text, Filled, Tonal, Outlined, Elevated
 - **Responsive to Theme** - Automatically adapts to light/dark color schemes
-- **Customizable Size** - Adjustable diameter from small to large
-- **Optional Container** - Circular background for better visibility
+- **MatMenu Integration** - Works seamlessly with Angular Material's menu component
 - **Material 3 Ready** - Uses M3 design tokens for theming (`--mat-sys-*`)
-- **Standalone Component** - Easy to import in any Angular 21+ application
-- **Lightweight** - Pure SVG animation, no external dependencies
+- **Standalone Directive** - Easy to import in any Angular 21+ application
+- **Accessible** - Keyboard navigation and ARIA support
 
 ## Installation
 
 ```bash
-npm install @softwarity/loading-indicator
+npm install @softwarity/split-button
 ```
 
 ### Peer Dependencies
@@ -50,36 +49,67 @@ npm install @softwarity/loading-indicator
 | Package | Version |
 |---------|---------|
 | @angular/core | >= 21.0.0 |
+| @angular/material | >= 21.0.0 |
 
 ## Usage
 
-Import the component in your standalone component:
+### 1. Include styles in your global stylesheet
+
+In your `styles.scss`, import and include the split-button styles:
+
+```scss
+@use '@softwarity/split-button/split-button-theme' as split-button;
+
+// Include split-button base styles (required)
+@include split-button.styles();
+```
+
+### 2. Import the directive in your component
 
 ```typescript
-import { LoadingIndicatorComponent } from '@softwarity/loading-indicator';
+import { SplitButtonDirective } from '@softwarity/split-button';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'app-my-component',
-  imports: [LoadingIndicatorComponent],
+  imports: [SplitButtonDirective, MatMenuModule],
   template: `...`
 })
 export class MyComponent {}
 ```
 
-Add the `loading-indicator` component in your template:
+### 3. Add the `appSplitButton` directive to your button
 
 ```html
-<!-- Basic usage -->
-<loading-indicator />
+<!-- Text button (default) -->
+<button appSplitButton [appSplitButtonTrigger]="trigger" (click)="onSave()">
+  Save
+</button>
+<span [matMenuTriggerFor]="menu" #trigger="matMenuTrigger"></span>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="onSaveAs()">Save As...</button>
+  <button mat-menu-item (click)="onSaveDraft()">Save Draft</button>
+</mat-menu>
 
-<!-- With custom diameter -->
-<loading-indicator [diameter]="96" />
+<!-- Filled variant -->
+<button appSplitButton="filled" [appSplitButtonTrigger]="trigger" (click)="onSubmit()">
+  Submit
+</button>
 
-<!-- With container background -->
-<loading-indicator withContainer />
+<!-- Outlined variant -->
+<button appSplitButton="outlined" [appSplitButtonTrigger]="trigger" (click)="onAction()">
+  Action
+</button>
 
-<!-- Combined -->
-<loading-indicator [diameter]="64" withContainer />
+<!-- Tonal variant -->
+<button appSplitButton="tonal" [appSplitButtonTrigger]="trigger" (click)="onProcess()">
+  Process
+</button>
+
+<!-- Elevated variant -->
+<button appSplitButton="elevated" [appSplitButtonTrigger]="trigger" (click)="onExport()">
+  Export
+</button>
 ```
 
 ## API
@@ -88,12 +118,23 @@ Add the `loading-indicator` component in your template:
 
 | Input | Type | Default | Description |
 |-------|------|---------|-------------|
-| `diameter` | `number` | `48` | Size of the loading indicator in pixels |
-| `withContainer` | `boolean` | `false` | When true, displays a circular background container behind the shape |
+| `appSplitButton` | `'' \| 'filled' \| 'tonal' \| 'outlined' \| 'elevated'` | `''` | Button variant following Material Design 3 guidelines |
+| `appSplitButtonTrigger` | `MatMenuTrigger` | `undefined` | Reference to the MatMenuTrigger for the dropdown menu |
+| `disabled` | `boolean` | `false` | Whether the button is disabled |
+
+### Button Variants
+
+| Variant | Description |
+|---------|-------------|
+| Text (default) | Lowest emphasis, for less important actions |
+| Filled | High emphasis, for primary actions |
+| Tonal | Medium emphasis with a container color from the secondary palette |
+| Outlined | Medium emphasis with a border outline |
+| Elevated | Medium emphasis with a shadow elevation |
 
 ## Theming (Material 3)
 
-The component provides a SCSS mixin to customize the colors. This approach follows Angular Material's theming pattern.
+The directive provides a SCSS mixin to customize the colors. This approach follows Angular Material's theming pattern.
 
 ### Setup
 
@@ -101,7 +142,7 @@ In your application's `styles.scss`, import the theme file and call the `overrid
 
 ```scss
 @use '@angular/material' as mat;
-@use '@softwarity/loading-indicator/loading-indicator-theme' as loading-indicator;
+@use '@softwarity/split-button/split-button-theme' as split-button;
 
 // Your Material 3 theme
 html {
@@ -112,8 +153,8 @@ html {
     )
   ));
 
-  // Optional: customize loading indicator colors
-  // @include loading-indicator.overrides();
+  // Optional: customize split-button colors
+  // @include split-button.overrides();
 }
 ```
 
@@ -123,70 +164,74 @@ The `overrides` mixin accepts a map of tokens to customize the appearance:
 
 | Token | Default | Description |
 |-------|---------|-------------|
-| `background-color` | `var(--mat-sys-primary-container)` | Background color when withContainer is true |
-| `shape-color` | `var(--mat-sys-on-secondary-container)` | Color of the animated shape |
+| `text-label-color` | `var(--mat-sys-primary)` | Label color for text variant |
+| `filled-container-color` | `var(--mat-sys-primary)` | Container color for filled variant |
+| `filled-label-color` | `var(--mat-sys-on-primary)` | Label color for filled variant |
+| `outlined-outline-color` | `var(--mat-sys-outline)` | Border color for outlined variant |
+| `outlined-label-color` | `var(--mat-sys-primary)` | Label color for outlined variant |
+| `tonal-container-color` | `var(--mat-sys-secondary-container)` | Container color for tonal variant |
+| `tonal-label-color` | `var(--mat-sys-on-secondary-container)` | Label color for tonal variant |
+| `elevated-container-color` | `var(--mat-sys-surface-container-low)` | Container color for elevated variant |
+| `elevated-label-color` | `var(--mat-sys-primary)` | Label color for elevated variant |
 
 ### Examples
 
 ```scss
-// Customize colors with light/dark support
-@include loading-indicator.overrides((
-  background-color: light-dark(#e8def8, #4a4458),
-  shape-color: light-dark(#6750a4, #ccc2dc)
+// Customize filled button colors
+@include split-button.overrides((
+  filled-container-color: light-dark(#6750a4, #d0bcff),
+  filled-label-color: light-dark(#ffffff, #381e72)
 ));
 
-// Use Material 3 system colors
-@include loading-indicator.overrides((
-  background-color: var(--mat-sys-tertiary-container),
-  shape-color: var(--mat-sys-on-tertiary-container)
+// Use Material 3 system colors for tonal variant
+@include split-button.overrides((
+  tonal-container-color: var(--mat-sys-tertiary-container),
+  tonal-label-color: var(--mat-sys-on-tertiary-container)
 ));
 
 // Custom brand colors
-@include loading-indicator.overrides((
-  shape-color: #ff5722
+@include split-button.overrides((
+  filled-container-color: #ff5722,
+  filled-label-color: #ffffff
 ));
 ```
 
 ## Examples
 
-### Centered Overlay
+### Save Action with Alternatives
 
 ```html
-<div class="loading-overlay">
-  <loading-indicator [diameter]="64" withContainer />
-</div>
-```
-
-### Inline Button Loading
-
-```html
-<button [disabled]="isLoading">
-  @if (isLoading) {
-    <loading-indicator [diameter]="24" />
-  } @else {
-    Submit
-  }
+<button appSplitButton="filled" [appSplitButtonTrigger]="saveTrigger" (click)="onSave()">
+  Save
 </button>
+<span [matMenuTriggerFor]="saveMenu" #saveTrigger="matMenuTrigger"></span>
+<mat-menu #saveMenu="matMenu">
+  <button mat-menu-item (click)="onSaveAs()">Save As...</button>
+  <button mat-menu-item (click)="onSaveDraft()">Save Draft</button>
+  <button mat-menu-item (click)="onSaveAndClose()">Save & Close</button>
+</mat-menu>
 ```
 
-### Content Placeholder
+### Export with Format Options
 
 ```html
-@if (isLoading) {
-  <loading-indicator [diameter]="48" />
-} @else {
-  <app-content />
-}
+<button appSplitButton="outlined" [appSplitButtonTrigger]="exportTrigger" (click)="onExportPDF()">
+  Export PDF
+</button>
+<span [matMenuTriggerFor]="exportMenu" #exportTrigger="matMenuTrigger"></span>
+<mat-menu #exportMenu="matMenu">
+  <button mat-menu-item (click)="onExportCSV()">Export CSV</button>
+  <button mat-menu-item (click)="onExportXLSX()">Export Excel</button>
+  <button mat-menu-item (click)="onExportJSON()">Export JSON</button>
+</mat-menu>
 ```
 
-### With Deferred Loading
+### Disabled State
 
 ```html
-@defer (on idle) {
-  <app-heavy-component />
-} @placeholder (minimum 500ms) {
-  <loading-indicator [diameter]="64" withContainer />
-}
+<button appSplitButton="filled" [appSplitButtonTrigger]="trigger" [disabled]="true">
+  Disabled
+</button>
 ```
 
 ## License

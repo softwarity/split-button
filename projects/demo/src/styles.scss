@@ -1,5 +1,8 @@
 @use '@angular/material' as mat;
-@use '@softwarity/loading-indicator/loading-indicator-theme' as loading-indicator;
+@use '@softwarity/split-button/split-button-theme' as split-button;
+
+// Include split-button base styles
+@include split-button.styles();
 
 // Material 3 Theme
 html {
@@ -60,10 +63,16 @@ html {
     color-scheme: dark;
   }
 
-  @include loading-indicator.overrides((
-    // container-background-color: light-dark(#ff6b6b, #8b0000),
-    // filled-background-color: light-dark(#4ecdc4, #006666),
-    // tonal-background-color: light-dark(#ffe66d, #806600)
+  @include split-button.overrides((
+    // text-label-color: var(--mat-sys-primary),
+    // filled-container-color: var(--mat-sys-primary),
+    // filled-label-color: var(--mat-sys-on-primary),
+    // outlined-outline-color: var(--mat-sys-outline),
+    // outlined-label-color: var(--mat-sys-primary),
+    // tonal-container-color: var(--mat-sys-secondary-container),
+    // tonal-label-color: var(--mat-sys-on-secondary-container),
+    // elevated-container-color: var(--mat-sys-surface-container-low),
+    // elevated-label-color: var(--mat-sys-primary)
   ));
 
   @include mat.table-overrides((

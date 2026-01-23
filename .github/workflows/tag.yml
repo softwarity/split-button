@@ -1,4 +1,4 @@
-name: Publish softwarity/loading-indicator to NPM
+name: Publish softwarity/split-button to NPM
 run-name: ${{ github.actor }} run build on ${{ github.repository }}
 on:
   push:

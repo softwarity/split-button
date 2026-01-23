@@ -1,0 +1,302 @@
+// =============================================================================
+// Split Button Theme
+// Material Design 3 compliant theming for split-button directive
+// =============================================================================
+
+// Default values using Material 3 system tokens
+$_defaults: (
+  // Text variant (default)
+  text-label-color: var(--mdc-text-button-label-text-color, var(--mat-sys-primary)),
+
+  // Filled variant
+  filled-container-color: var(--mdc-filled-button-container-color, var(--mat-sys-primary)),
+  filled-label-color: var(--mdc-filled-button-label-text-color, var(--mat-sys-on-primary)),
+
+  // Outlined variant
+  outlined-outline-color: var(--mdc-outlined-button-outline-color, var(--mat-sys-outline)),
+  outlined-label-color: var(--mdc-outlined-button-label-text-color, var(--mat-sys-primary)),
+
+  // Tonal variant
+  tonal-container-color: var(--mat-sys-secondary-container),
+  tonal-label-color: var(--mat-sys-on-secondary-container),
+
+  // Elevated variant
+  elevated-container-color: var(--mdc-protected-button-container-color, var(--mat-sys-surface-container-low)),
+  elevated-label-color: var(--mdc-protected-button-label-text-color, var(--mat-sys-primary)),
+  elevated-shadow: var(--mdc-protected-button-container-elevation-shadow, 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15)),
+
+  // Shape
+  container-shape: var(--mdc-outlined-button-container-shape, 20px),
+
+  // Disabled state
+  disabled-opacity: 0.38
+);
+
+/// Mixin to include split-button base styles
+/// Must be called once in your global styles
+/// @example
+///   @include split-button.styles();
+@mixin styles() {
+  .split-button {
+    display: inline-flex;
+    align-items: stretch;
+    border-radius: var(--split-button-container-shape, var(--mdc-outlined-button-container-shape, 20px));
+    overflow: hidden;
+    vertical-align: middle;
+    height: 40px;
+
+    // Main button styling
+    .split-button-main {
+      border: none;
+      background: transparent;
+      border-radius: 0 !important;
+      border-top-left-radius: var(--split-button-container-shape, var(--mdc-outlined-button-container-shape, 20px)) !important;
+      border-bottom-left-radius: var(--split-button-container-shape, var(--mdc-outlined-button-container-shape, 20px)) !important;
+      min-width: unset;
+      padding: 0 16px 0 24px;
+      height: 40px;
+      font-family: var(--mat-sys-label-large-font);
+      font-size: var(--mat-sys-label-large-size, 14px);
+      font-weight: var(--mat-sys-label-large-weight, 500);
+      letter-spacing: var(--mat-sys-label-large-tracking, 0.1px);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    // Chevron button styling
+    .split-button-chevron {
+      // Reset all button defaults
+      all: unset;
+      box-sizing: border-box;
+      border: none;
+      background: transparent;
+      border-radius: 0;
+      border-top-right-radius: var(--split-button-container-shape, var(--mdc-outlined-button-container-shape, 20px));
+      border-bottom-right-radius: var(--split-button-container-shape, var(--mdc-outlined-button-container-shape, 20px));
+      width: 40px;
+      min-width: 40px;
+      max-width: 40px;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 40px;
+      flex-shrink: 0;
+
+      .split-button-icon {
+        width: 24px;
+        height: 24px;
+        display: block;
+      }
+
+      &:hover {
+        background: color-mix(in srgb, currentColor 8%, transparent);
+      }
+
+      &:focus-visible {
+        outline: 2px solid var(--mat-sys-primary);
+        outline-offset: -2px;
+      }
+    }
+
+    // Default/text variant (lowest emphasis) - base colors applied to all variants
+    // These are overridden by specific variant styles below
+    .split-button-main {
+      color: var(--split-button-text-label-color, var(--mdc-text-button-label-text-color, var(--mat-sys-primary)));
+
+      &:hover {
+        background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+      }
+    }
+
+    .split-button-chevron {
+      color: var(--split-button-text-label-color, var(--mdc-text-button-label-text-color, var(--mat-sys-primary)));
+    }
+
+    // Outlined variant (medium emphasis)
+    &--outlined {
+      border: 1px solid var(--split-button-outlined-outline-color, var(--mdc-outlined-button-outline-color, var(--mat-sys-outline)));
+
+      .split-button-main {
+        color: var(--split-button-outlined-label-color, var(--mdc-outlined-button-label-text-color, var(--mat-sys-primary)));
+
+        &:hover {
+          background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+        }
+      }
+
+      .split-button-chevron {
+        border-left: 1px solid var(--split-button-outlined-outline-color, var(--mdc-outlined-button-outline-color, var(--mat-sys-outline)));
+        color: var(--split-button-outlined-label-color, var(--mdc-outlined-button-label-text-color, var(--mat-sys-primary)));
+      }
+    }
+
+    // Elevated variant (medium emphasis with shadow)
+    &--elevated {
+      box-shadow: var(--split-button-elevated-shadow, var(--mdc-protected-button-container-elevation-shadow, 0 1px 2px 0 rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15)));
+      background: var(--split-button-elevated-container-color, var(--mdc-protected-button-container-color, var(--mat-sys-surface-container-low)));
+
+      .split-button-main {
+        color: var(--split-button-elevated-label-color, var(--mdc-protected-button-label-text-color, var(--mat-sys-primary)));
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 20%;
+          height: 60%;
+          width: 1px;
+          background: currentColor;
+          opacity: 0.2;
+        }
+
+        &:hover {
+          background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
+        }
+      }
+
+      .split-button-chevron {
+        color: var(--split-button-elevated-label-color, var(--mdc-protected-button-label-text-color, var(--mat-sys-primary)));
+      }
+    }
+
+    // Filled variant (high emphasis)
+    &--filled {
+      background: var(--split-button-filled-container-color, var(--mdc-filled-button-container-color, var(--mat-sys-primary)));
+
+      .split-button-main {
+        color: var(--split-button-filled-label-color, var(--mdc-filled-button-label-text-color, var(--mat-sys-on-primary)));
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 20%;
+          height: 60%;
+          width: 1px;
+          background: currentColor;
+          opacity: 0.2;
+        }
+
+        &:hover {
+          background: color-mix(in srgb, var(--mat-sys-on-primary) 8%, transparent);
+        }
+      }
+
+      .split-button-chevron {
+        color: var(--split-button-filled-label-color, var(--mdc-filled-button-label-text-color, var(--mat-sys-on-primary)));
+      }
+    }
+
+    // Tonal variant (medium emphasis with container color)
+    &--tonal {
+      background: var(--split-button-tonal-container-color, var(--mat-sys-secondary-container));
+
+      .split-button-main {
+        color: var(--split-button-tonal-label-color, var(--mat-sys-on-secondary-container));
+        position: relative;
+
+        &::after {
+          content: '';
+          position: absolute;
+          right: 0;
+          top: 20%;
+          height: 60%;
+          width: 1px;
+          background: currentColor;
+          opacity: 0.2;
+        }
+
+        &:hover {
+          background: color-mix(in srgb, var(--mat-sys-on-secondary-container) 8%, transparent);
+        }
+      }
+
+      .split-button-chevron {
+        color: var(--split-button-tonal-label-color, var(--mat-sys-on-secondary-container));
+      }
+    }
+
+    // Disabled state
+    &--disabled {
+      pointer-events: none;
+      opacity: var(--split-button-disabled-opacity, 0.38);
+    }
+  }
+
+  // Hidden trigger for menu (utility class)
+  .hidden-trigger {
+    position: absolute;
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+
+/// Mixin to override split-button theme tokens
+/// @param {Map} $tokens - Map of token overrides
+/// @example
+///   @include split-button.overrides((
+///     filled-container-color: #ff5722,
+///     filled-label-color: #ffffff
+///   ));
+@mixin overrides($tokens: ()) {
+  @if length($tokens) > 0 {
+    :root {
+      // Text variant
+      @if map-has-key($tokens, text-label-color) {
+        --split-button-text-label-color: #{map-get($tokens, text-label-color)};
+      }
+
+      // Filled variant
+      @if map-has-key($tokens, filled-container-color) {
+        --split-button-filled-container-color: #{map-get($tokens, filled-container-color)};
+      }
+      @if map-has-key($tokens, filled-label-color) {
+        --split-button-filled-label-color: #{map-get($tokens, filled-label-color)};
+      }
+
+      // Outlined variant
+      @if map-has-key($tokens, outlined-outline-color) {
+        --split-button-outlined-outline-color: #{map-get($tokens, outlined-outline-color)};
+      }
+      @if map-has-key($tokens, outlined-label-color) {
+        --split-button-outlined-label-color: #{map-get($tokens, outlined-label-color)};
+      }
+
+      // Tonal variant
+      @if map-has-key($tokens, tonal-container-color) {
+        --split-button-tonal-container-color: #{map-get($tokens, tonal-container-color)};
+      }
+      @if map-has-key($tokens, tonal-label-color) {
+        --split-button-tonal-label-color: #{map-get($tokens, tonal-label-color)};
+      }
+
+      // Elevated variant
+      @if map-has-key($tokens, elevated-container-color) {
+        --split-button-elevated-container-color: #{map-get($tokens, elevated-container-color)};
+      }
+      @if map-has-key($tokens, elevated-label-color) {
+        --split-button-elevated-label-color: #{map-get($tokens, elevated-label-color)};
+      }
+      @if map-has-key($tokens, elevated-shadow) {
+        --split-button-elevated-shadow: #{map-get($tokens, elevated-shadow)};
+      }
+
+      // Shape
+      @if map-has-key($tokens, container-shape) {
+        --split-button-container-shape: #{map-get($tokens, container-shape)};
+      }
+
+      // Disabled
+      @if map-has-key($tokens, disabled-opacity) {
+        --split-button-disabled-opacity: #{map-get($tokens, disabled-opacity)};
+      }
+    }
+  }
+}

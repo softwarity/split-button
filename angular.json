@@ -55,7 +55,7 @@
         }
       }
     },
-    "loading-indicator": {
+    "split-button": {
       "projectType": "library",
       "root": "",
       "sourceRoot": "src",
