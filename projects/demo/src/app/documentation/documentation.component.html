@@ -9,22 +9,10 @@
     </interactive-code>
   </article>
 
-  <!-- Setup -->
-  <article class="doc-section">
-    <h3>Setup</h3>
-    <p>First, include the styles in your global <code>styles.scss</code>:</p>
-    <interactive-code language="scss">
-      <textarea>@use '@softwarity/split-button/split-button-theme' as split-button;
-
-// Include split-button base styles (required)
-@include split-button.styles();</textarea>
-    </interactive-code>
-  </article>
-
   <!-- Usage -->
   <article class="doc-section">
     <h3>Usage</h3>
-    <p>Import the directive and use it in your template:</p>
+    <p>Import the directive and use it in your template (styles are automatically injected):</p>
     <interactive-code language="typescript">
       <textarea>// In your component
 import { SplitButtonDirective } from '@softwarity/split-button';
@@ -133,28 +121,19 @@ import { MatMenuModule } from '@angular/material/menu';
 
   <!-- Theming -->
   <article class="doc-section">
-    <h3>Theming (Material 3)</h3>
-    <p>The directive provides a SCSS mixin to customize the colors. This approach follows Angular Material's theming pattern.</p>
-    <p>In your application's <code>styles.scss</code>, import the theme file and call the <code>overrides</code> mixin:</p>
+    <h3>Theming (Optional)</h3>
+    <p>The directive automatically injects its styles. If you want to customize the colors, use the optional SCSS mixin:</p>
     <interactive-code language="scss">
-      <textarea>@use '@angular/material' as mat;
-@use '@softwarity/split-button/split-button-theme' as split-button;
+      <textarea>@use '@softwarity/split-button/split-button-theme' as split-button;
 
-// Your Material 3 theme
-html {
-  @include mat.theme((
-    color: (
-      primary: mat.$violet-palette,
-      tertiary: mat.$yellow-palette
-    )
-  ));
-
-  // Optional: customize split-button colors
-  // @include split-button.overrides();
-}</textarea>
+// Customize split-button colors
+@include split-button.overrides((
+  filled-container-color: #ff5722,
+  filled-label-color: #ffffff
+));</textarea>
     </interactive-code>
 
-    <h4>Customization</h4>
+    <h4>Available Tokens</h4>
     <p>The <code>overrides</code> mixin accepts a map of tokens to customize the appearance:</p>
     <div class="api-table-wrapper">
       <table class="api-table">

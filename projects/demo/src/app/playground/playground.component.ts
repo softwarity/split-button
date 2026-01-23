@@ -33,7 +33,7 @@ export class PlaygroundComponent {
   protected darkModeClass = computed(() => this.isDarkMode() ? 'dark-mode' : '');
 
   // Split button properties
-  protected variant = signal<SplitButtonVariant>('');
+  protected variant = signal<SplitButtonVariant>('filled');
   protected disabled = signal(false);
 
   // Palette

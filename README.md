@@ -53,18 +53,7 @@ npm install @softwarity/split-button
 
 ## Usage
 
-### 1. Include styles in your global stylesheet
-
-In your `styles.scss`, import and include the split-button styles:
-
-```scss
-@use '@softwarity/split-button/split-button-theme' as split-button;
-
-// Include split-button base styles (required)
-@include split-button.styles();
-```
-
-### 2. Import the directive in your component
+### 1. Import the directive in your component
 
 ```typescript
 import { SplitButtonDirective } from '@softwarity/split-button';
@@ -78,7 +67,7 @@ import { MatMenuModule } from '@angular/material/menu';
 export class MyComponent {}
 ```
 
-### 3. Add the `appSplitButton` directive to your button
+### 2. Add the `appSplitButton` directive to your button
 
 ```html
 <!-- Text button (default) -->
@@ -132,33 +121,21 @@ export class MyComponent {}
 | Outlined | Medium emphasis with a border outline |
 | Elevated | Medium emphasis with a shadow elevation |
 
-## Theming (Material 3)
+## Theming (Optional)
 
-The directive provides a SCSS mixin to customize the colors. This approach follows Angular Material's theming pattern.
-
-### Setup
-
-In your application's `styles.scss`, import the theme file and call the `overrides` mixin:
+The directive automatically injects its styles. If you want to customize the colors, you can use the optional SCSS mixin:
 
 ```scss
-@use '@angular/material' as mat;
 @use '@softwarity/split-button/split-button-theme' as split-button;
 
-// Your Material 3 theme
-html {
-  @include mat.theme((
-    color: (
-      primary: mat.$violet-palette,
-      tertiary: mat.$yellow-palette
-    )
-  ));
-
-  // Optional: customize split-button colors
-  // @include split-button.overrides();
-}
+// Customize split-button colors
+@include split-button.overrides((
+  filled-container-color: #ff5722,
+  filled-label-color: #ffffff
+));
 ```
 
-### Customization
+### Available Tokens
 
 The `overrides` mixin accepts a map of tokens to customize the appearance:
 
