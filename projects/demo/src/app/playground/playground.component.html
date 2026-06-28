@@ -27,7 +27,7 @@
   <button mat-menu-item>Option 1</button>
   <button mat-menu-item>Option 2</button>
 </mat-menu></textarea>
-    <code-binding key="variant" type="select" options=",filled,tonal,outlined,elevated" [value]="variant()" (change)="variant.set($any($event).detail)"></code-binding>
+    <code-binding key="variant" type="select" options=",filled,tonal,outlined,elevated" [value]="variant()" (change)="variant.set($any($event).detail)" carousel></code-binding>
     <code-binding key="disabled" type="boolean" [value]="disabled()" (change)="disabled.set($any($event).detail)"></code-binding>
   </interactive-code>
 
@@ -46,6 +46,28 @@
     </div>
   </div>
 
+  <!-- Contrast container: transparent variants auto-adapt to the container's text color -->
+  <p class="preview-caption">
+    The same split-button, dropped inside a <code>mat-toolbar</code> themed with the <code>primary</code>
+    color. Its transparent variants (<strong>text</strong>, <strong>outlined</strong>) automatically pick up
+    the toolbar's text color, while the container variants (<strong>filled</strong>, <strong>tonal</strong>,
+    <strong>elevated</strong>) keep their own. Switch the palette below and watch the whole thing follow the theme.
+  </p>
+  <div class="preview-container">
+    <mat-toolbar class="contrast-toolbar">
+      <span class="toolbar-title">My App</span>
+      <span class="toolbar-spacer"></span>
+      <button [appSplitButton]="variant()" [appSplitButtonTrigger]="toolbarTrigger" (click)="onPrimaryAction()">
+        Save
+      </button>
+      <span class="hidden-trigger" [matMenuTriggerFor]="toolbarMenu" #toolbarTrigger="matMenuTrigger"></span>
+      <mat-menu #toolbarMenu="matMenu">
+        <button mat-menu-item (click)="onMenuAction('save-as')">Save as…</button>
+        <button mat-menu-item (click)="onMenuAction('save-copy')">Save a copy</button>
+      </mat-menu>
+    </mat-toolbar>
+  </div>
+
   <!-- SCSS Material Theme -->
   <interactive-code language="scss">
     <textarea>@use '@angular/material' as mat;
@@ -58,7 +80,7 @@ html {
     color-scheme: dark;
   }
 }</textarea>
-    <code-binding key="palette" type="select" options="violet,red,green,blue,yellow,cyan,magenta,orange,chartreuse,spring-green,azure,rose" [value]="selectedPalette()" (change)="selectedPalette.set($any($event).detail)"></code-binding>
+    <code-binding key="palette" type="select" options="violet,red,green,blue,yellow,cyan,magenta,orange,chartreuse,spring-green,azure,rose" [value]="selectedPalette()" (change)="selectedPalette.set($any($event).detail)" carousel></code-binding>
   </interactive-code>
 
   <!-- SCSS Overrides -->

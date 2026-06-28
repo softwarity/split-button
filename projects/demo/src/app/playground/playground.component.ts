@@ -2,6 +2,7 @@ import { Component, CUSTOM_ELEMENTS_SCHEMA, computed, effect, inject, signal } f
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { SplitButtonDirective } from '@softwarity/split-button';
 import { registerInteractiveCode } from '@softwarity/interactive-code';
 
@@ -19,6 +20,7 @@ type SplitButtonVariant = '' | 'filled' | 'tonal' | 'outlined' | 'elevated';
     MatIconModule,
     MatMenuModule,
     MatSnackBarModule,
+    MatToolbarModule,
     SplitButtonDirective,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

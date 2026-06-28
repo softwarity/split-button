@@ -33,6 +33,7 @@ An Angular directive that creates a [Material Design 3 split button](https://m3.
 - **Material Design 3 Compliant** - Follows M3 button specifications
 - **5 Button Variants** - Text, Filled, Tonal, Outlined, Elevated
 - **Responsive to Theme** - Automatically adapts to light/dark color schemes
+- **Toolbar-aware** - Text & outlined variants auto-adapt their label color inside a `mat-toolbar`
 - **MatMenu Integration** - Works seamlessly with Angular Material's menu component
 - **Material 3 Ready** - Uses M3 design tokens for theming (`--mat-sys-*`)
 - **Standalone Directive** - Easy to import in any Angular 21+ application
@@ -150,6 +151,10 @@ The `overrides` mixin accepts a map of tokens to customize the appearance:
 | `tonal-label-color` | `var(--mat-sys-on-secondary-container)` | Label color for tonal variant |
 | `elevated-container-color` | `var(--mat-sys-surface-container-low)` | Container color for elevated variant |
 | `elevated-label-color` | `var(--mat-sys-primary)` | Label color for elevated variant |
+
+### Adapting to the surrounding container
+
+The transparent variants (`text` and `outlined`) inherit `--mat-toolbar-container-text-color`, so their label and chevron automatically match the text color of a surrounding `mat-toolbar` — just like a real `matButton`. Outside a toolbar they fall back to `var(--mat-sys-primary)`. The container variants (`filled`, `tonal`, `elevated`) keep their own label color over their own background. You can override any of this with the tokens above.
 
 ### Examples
 

@@ -113,6 +113,7 @@ import { MatMenuModule } from '@angular/material/menu';
       <li><strong><a href="https://m3.material.io/components/buttons/overview" target="_blank">Material Design 3 Compliant</a></strong> - Follows M3 button specifications</li>
       <li><strong>5 Button Variants</strong> - Text, Filled, Tonal, Outlined, Elevated</li>
       <li><strong>Responsive to Theme</strong> - Automatically adapts to light/dark color schemes</li>
+      <li><strong>Toolbar-aware</strong> - Text &amp; outlined variants auto-adapt their label color inside a <code>mat-toolbar</code></li>
       <li><strong>Standalone Directive</strong> - No module import required, just import and use</li>
       <li><strong>MatMenu Integration</strong> - Works seamlessly with Angular Material's menu component</li>
       <li><strong>Accessible</strong> - Keyboard navigation and ARIA support</li>
@@ -193,6 +194,16 @@ import { MatMenuModule } from '@angular/material/menu';
         </tbody>
       </table>
     </div>
+
+    <h4>Adapting to the surrounding container</h4>
+    <p>
+      The transparent variants (<code>text</code> and <code>outlined</code>) inherit
+      <code>--mat-toolbar-container-text-color</code>, so their label and chevron automatically match the
+      text color of a surrounding <code>mat-toolbar</code> — just like a real <code>matButton</code>.
+      Outside a toolbar they fall back to <code>var(--mat-sys-primary)</code>. The container variants
+      (<code>filled</code>, <code>tonal</code>, <code>elevated</code>) keep their own label color over
+      their own background.
+    </p>
 
     <h4>Examples</h4>
     <interactive-code language="scss">

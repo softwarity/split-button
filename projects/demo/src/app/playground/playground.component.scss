@@ -81,3 +81,34 @@
     border: 1px solid var(--mat-sys-outline-variant);
   }
 }
+
+.preview-caption {
+  margin: 1.5rem 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+
+  code {
+    font-family: 'Courier New', Consolas, monospace;
+    font-size: 0.85em;
+  }
+}
+
+.contrast-toolbar {
+  // Themed with the primary color. The split-button's transparent variants inherit
+  // this text-color token and adapt their label/chevron to stay readable.
+  --mat-toolbar-container-background-color: var(--mat-sys-primary);
+  --mat-toolbar-container-text-color: var(--mat-sys-on-primary);
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px;
+  gap: 12px;
+
+  .toolbar-title {
+    font: var(--mat-sys-title-large);
+  }
+
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
+}

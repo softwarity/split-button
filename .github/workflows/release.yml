@@ -1,28 +1,44 @@
 name: Create Tag/Release
-run-name: ${{ github.actor }} run build on ${{ github.repository }}
+run-name: ${{ github.actor }} release ${{ inputs.bump }} on ${{ github.repository }}
+
 on:
   workflow_dispatch:
+    inputs:
+      bump:
+        description: "Version bump type"
+        required: true
+        default: patch
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+
+permissions:
+  contents: write
+
 jobs:
-  create-release:
+  release:
+    name: Bump, tag and release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT_TOKEN }}
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-      - run: git config user.name "$GITHUB_ACTOR"
-      - run: git config user.email ""
-      - name: Version, prepare next release notes, and push
-        run: |
-          npm version patch
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT_VERSION"
-          NEXT_VERSION="$MAJOR.$MINOR.$((PATCH + 1))"
-          sed -i "s/^# Release Notes$/# Release Notes\n\n## $NEXT_VERSION\n\n---/" RELEASE_NOTES.md
-          git add RELEASE_NOTES.md
-          git commit --amend --no-edit
-          git push --all
-          git push --tags
+          fetch-depth: 0
+          token: ${{ secrets.PAT_TOKEN }} # PAT so the pushed tag triggers tag.yml (publish)
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install, build and smoke test
+        run: |
+          npm ci
+          npm run build
+          npm test
+
+      - uses: softwarity/release-flow@v1
+        with:
+          bump: ${{ inputs.bump }} # the value picked in the dropdown

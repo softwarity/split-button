@@ -1,6 +1,32 @@
 # Release Notes
 
-## 1.0.2
+## NEXT RELEASE
+
+### Fixes
+- **Theming on Angular Material 17+**: migrated every button design token from the
+  legacy `--mdc-*-button-*` names to the current `--mat-button-*` names — label and
+  container colors, outline color, container shape (border-radius) and elevation
+  shadow. Material no longer emits the `--mdc-*` tokens, so the directive previously
+  fell through to its `--mat-sys-*` fallbacks and ignored any button-level
+  customization coming from the Angular Material theme (e.g. `mat.button-overrides(...)`).
+  The `--split-button-*` overrides and `--mat-sys-*` defaults are unaffected.
+- **Auto-adapt inside a `mat-toolbar`**: the transparent variants (text, outlined)
+  now fall back to `--mat-toolbar-container-text-color`, so their label and chevron
+  pick up the toolbar's text color automatically — matching how a real `matButton`
+  behaves. The container variants (filled, tonal, elevated) are unchanged (they keep
+  their own label color over their own background).
+
+### Docs
+- README and demo documentation now describe the toolbar auto-adaptation behavior.
+- Demo playground gains a contrasted `mat-toolbar` example (the split-button's label
+  follows the toolbar text color) and carousel pickers for the `variant` and Material
+  `palette` selectors.
+
+### Chore
+- Updated the dev/build toolchain to patched releases (Angular 21.2.x, Angular CDK/Material
+  21.2.14) and pinned `undici`/`@babel/core` via npm `overrides`, clearing all high/moderate
+  `npm audit` advisories. These are devDependencies only — the published package is unaffected
+  (it ships nothing but `tslib` at runtime).
 
 ---
 
@@ -67,4 +93,3 @@
 - Includes hidden-trigger utility styles
 
 ---
-

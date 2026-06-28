@@ -21,7 +21,21 @@ const VARIANT_CLASSES = ['split-button--filled', 'split-button--tonal', 'split-b
 
 const STYLE_ID = 'split-button-styles';
 
-/** Injects styles into the document head (only once) */
+/**
+ * Injects styles into the document head (only once).
+ *
+ * Color strategy (mirrors how a real `matButton` behaves):
+ * - Tokens use the Angular Material v17+ `--mat-button-*` names. The legacy
+ *   `--mdc-*` names are no longer emitted by Material, so reading them always
+ *   fell through to the `--mat-sys-*` fallback and never picked up the theme.
+ * - The "transparent" variants (text, outlined) add `--mat-toolbar-container-text-color`
+ *   to their fallback chain so their label/chevron auto-adapt to a `mat-toolbar`'s
+ *   text color — Material remaps the same token for its own buttons, but only on
+ *   `.mat-mdc-button-base.mat-unthemed` elements (which this directive's wrapper
+ *   is not), so we inherit the toolbar token directly instead.
+ * - The "container" variants (filled, tonal, elevated) keep their own label color;
+ *   they sit on their own background and must not follow the container's text color.
+ */
 function injectStyles(doc: Document): void {
   if (doc.getElementById(STYLE_ID)) return;
 
@@ -31,7 +45,7 @@ function injectStyles(doc: Document): void {
     .split-button {
       display: inline-flex;
       align-items: stretch;
-      border-radius: var(--split-button-container-shape, var(--mdc-outlined-button-container-shape, 20px));
+      border-radius: var(--split-button-container-shape, var(--mat-button-outlined-container-shape, 20px));
       overflow: hidden;
       vertical-align: middle;
       height: 40px;
@@ -40,8 +54,8 @@ function injectStyles(doc: Document): void {
       border: none;
       background: transparent;
       border-radius: 0;
-      border-top-left-radius: var(--split-button-container-shape, var(--mdc-outlined-button-container-shape, 20px));
-      border-bottom-left-radius: var(--split-button-container-shape, var(--mdc-outlined-button-container-shape, 20px));
+      border-top-left-radius: var(--split-button-container-shape, var(--mat-button-outlined-container-shape, 20px));
+      border-bottom-left-radius: var(--split-button-container-shape, var(--mat-button-outlined-container-shape, 20px));
       min-width: unset;
       padding: 0 16px 0 24px;
       height: 40px;
@@ -53,7 +67,7 @@ function injectStyles(doc: Document): void {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      color: var(--split-button-text-label-color, var(--mdc-text-button-label-text-color, var(--mat-sys-primary)));
+      color: var(--split-button-text-label-color, var(--mat-button-text-label-text-color, var(--mat-toolbar-container-text-color, var(--mat-sys-primary))));
     }
     .split-button .split-button-main:hover {
       background: color-mix(in srgb, var(--mat-sys-primary) 8%, transparent);
@@ -64,8 +78,8 @@ function injectStyles(doc: Document): void {
       border: none;
       background: transparent;
       border-radius: 0;
-      border-top-right-radius: var(--split-button-container-shape, var(--mdc-outlined-button-container-shape, 20px));
-      border-bottom-right-radius: var(--split-button-container-shape, var(--mdc-outlined-button-container-shape, 20px));
+      border-top-right-radius: var(--split-button-container-shape, var(--mat-button-outlined-container-shape, 20px));
+      border-bottom-right-radius: var(--split-button-container-shape, var(--mat-button-outlined-container-shape, 20px));
       width: 40px;
       min-width: 40px;
       max-width: 40px;
@@ -77,7 +91,7 @@ function injectStyles(doc: Document): void {
       justify-content: center;
       height: 40px;
       flex-shrink: 0;
-      color: var(--split-button-text-label-color, var(--mdc-text-button-label-text-color, var(--mat-sys-primary)));
+      color: var(--split-button-text-label-color, var(--mat-button-text-label-text-color, var(--mat-toolbar-container-text-color, var(--mat-sys-primary))));
     }
     .split-button .split-button-chevron:hover {
       background: color-mix(in srgb, currentColor 8%, transparent);
@@ -93,22 +107,22 @@ function injectStyles(doc: Document): void {
     }
     /* Outlined variant */
     .split-button.split-button--outlined {
-      border: 1px solid var(--split-button-outlined-outline-color, var(--mdc-outlined-button-outline-color, var(--mat-sys-outline)));
+      border: 1px solid var(--split-button-outlined-outline-color, var(--mat-button-outlined-outline-color, var(--mat-sys-outline)));
     }
     .split-button.split-button--outlined .split-button-main {
-      color: var(--split-button-outlined-label-color, var(--mdc-outlined-button-label-text-color, var(--mat-sys-primary)));
+      color: var(--split-button-outlined-label-color, var(--mat-button-outlined-label-text-color, var(--mat-toolbar-container-text-color, var(--mat-sys-primary))));
     }
     .split-button.split-button--outlined .split-button-chevron {
-      border-left: 1px solid var(--split-button-outlined-outline-color, var(--mdc-outlined-button-outline-color, var(--mat-sys-outline)));
-      color: var(--split-button-outlined-label-color, var(--mdc-outlined-button-label-text-color, var(--mat-sys-primary)));
+      border-left: 1px solid var(--split-button-outlined-outline-color, var(--mat-button-outlined-outline-color, var(--mat-sys-outline)));
+      color: var(--split-button-outlined-label-color, var(--mat-button-outlined-label-text-color, var(--mat-toolbar-container-text-color, var(--mat-sys-primary))));
     }
     /* Elevated variant */
     .split-button.split-button--elevated {
-      box-shadow: var(--split-button-elevated-shadow, var(--mdc-protected-button-container-elevation-shadow, 0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15)));
-      background: var(--split-button-elevated-container-color, var(--mdc-protected-button-container-color, var(--mat-sys-surface-container-low)));
+      box-shadow: var(--split-button-elevated-shadow, var(--mat-button-protected-container-elevation-shadow, 0 1px 2px 0 rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15)));
+      background: var(--split-button-elevated-container-color, var(--mat-button-protected-container-color, var(--mat-sys-surface-container-low)));
     }
     .split-button.split-button--elevated .split-button-main {
-      color: var(--split-button-elevated-label-color, var(--mdc-protected-button-label-text-color, var(--mat-sys-primary)));
+      color: var(--split-button-elevated-label-color, var(--mat-button-protected-label-text-color, var(--mat-sys-primary)));
       position: relative;
     }
     .split-button.split-button--elevated .split-button-main::after {
@@ -122,14 +136,14 @@ function injectStyles(doc: Document): void {
       opacity: 0.2;
     }
     .split-button.split-button--elevated .split-button-chevron {
-      color: var(--split-button-elevated-label-color, var(--mdc-protected-button-label-text-color, var(--mat-sys-primary)));
+      color: var(--split-button-elevated-label-color, var(--mat-button-protected-label-text-color, var(--mat-sys-primary)));
     }
     /* Filled variant */
     .split-button.split-button--filled {
-      background: var(--split-button-filled-container-color, var(--mdc-filled-button-container-color, var(--mat-sys-primary)));
+      background: var(--split-button-filled-container-color, var(--mat-button-filled-container-color, var(--mat-sys-primary)));
     }
     .split-button.split-button--filled .split-button-main {
-      color: var(--split-button-filled-label-color, var(--mdc-filled-button-label-text-color, var(--mat-sys-on-primary)));
+      color: var(--split-button-filled-label-color, var(--mat-button-filled-label-text-color, var(--mat-sys-on-primary)));
       position: relative;
     }
     .split-button.split-button--filled .split-button-main::after {
@@ -146,7 +160,7 @@ function injectStyles(doc: Document): void {
       background: color-mix(in srgb, var(--mat-sys-on-primary) 8%, transparent);
     }
     .split-button.split-button--filled .split-button-chevron {
-      color: var(--split-button-filled-label-color, var(--mdc-filled-button-label-text-color, var(--mat-sys-on-primary)));
+      color: var(--split-button-filled-label-color, var(--mat-button-filled-label-text-color, var(--mat-sys-on-primary)));
     }
     /* Tonal variant */
     .split-button.split-button--tonal {
