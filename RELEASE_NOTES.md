@@ -2,6 +2,10 @@
 
 ## NEXT RELEASE
 
+---
+
+## 1.0.2
+
 ### Fixes
 - **Theming on Angular Material 17+**: migrated every button design token from the
   legacy `--mdc-*-button-*` names to the current `--mat-button-*` names — label and

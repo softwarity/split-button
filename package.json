@@ -1,6 +1,6 @@
 {
   "name": "@softwarity/split-button",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Softwarity",
   "license": "MIT",
   "description": "Angular Material 3 split button directive with dropdown menu support",
